@@ -1,0 +1,20 @@
+= Api documentation
+:source-highlighter: highlightjs
+:sectanchors:
+:toc: left
+
+== Overview
+
+== Report
+Report endpoints are used to manage report design files.
+
+=== List reports
+//:operation-name: getHero
+include::{snippets}\getHero\http-request.adoc[]
+include::{snippets}\getHero\http-response.adoc[]
+include::{snippets}\getHero\response-fields.adoc[]
+
+
+
+
+//include::GET-request.adoc[]
