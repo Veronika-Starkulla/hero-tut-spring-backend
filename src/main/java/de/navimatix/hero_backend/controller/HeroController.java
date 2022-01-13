@@ -73,8 +73,8 @@ public class HeroController {
     })
     public ResponseEntity<Hero> addHero(@RequestBody Hero hero) {
         try {
-            Optional<Hero> optionalHero = heroService.saveOrUpdate(hero);
-            return new ResponseEntity<>(optionalHero.get(), HttpStatus.OK);
+            Hero optionalHero = heroService.saveOrUpdate(hero);
+            return new ResponseEntity<>(optionalHero, HttpStatus.OK);
 
         }catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -84,18 +84,13 @@ public class HeroController {
     @PutMapping("/hero/{id}")
     @Operation(summary = "Update hero", responses = {
             @ApiResponse(description = "Update Hero success", responseCode = "200", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Hero.class))),
-            @ApiResponse(description = "Not found", responseCode = "404", content = @Content),
+            @ApiResponse(description = "Internal Server Error", responseCode = "500", content = @Content),
     })
     public ResponseEntity<Hero> updateHero(@RequestBody Hero hero) {
-        Optional<Hero> optionalHero = heroService.getHeroById(hero.getId());
-
-        if (optionalHero.isPresent()) {
-            Hero _hero = optionalHero.get();
-            _hero.setId(hero.getId());
-            _hero.setName(hero.getName());
-            return new ResponseEntity<>(heroService.saveOrUpdate(_hero).get(), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        try {
+            return new ResponseEntity<>(heroService.saveOrUpdate(hero), HttpStatus.OK);
+        }catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -106,6 +101,7 @@ public class HeroController {
     })
     public ResponseEntity<HttpStatus> deleteHero(@PathVariable("id") int id) {
         try {
+
             heroService.deleteHeroById(id);
 
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);

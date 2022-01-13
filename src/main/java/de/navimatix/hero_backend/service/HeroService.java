@@ -24,9 +24,8 @@ public class HeroService {
         return heroes;
     }
 
-    public Optional<Hero> saveOrUpdate(Hero hero) {
-        repository.save(hero);
-        return repository.findById(hero.getId());
+    public Hero saveOrUpdate(Hero hero) {
+        return repository.save(hero);
     }
 
     public void deleteHeroById(int id) {
